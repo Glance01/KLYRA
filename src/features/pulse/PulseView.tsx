@@ -33,7 +33,7 @@ export const PulseView: React.FC<PulseViewProps> = ({ onNavigate, onOpenProfile 
     return t('pulse.goodEvening', 'Boa noite');
   };
 
-  const firstName = currentUser?.displayName.split(' ')[0] || t('pulse.you', 'Você');
+  const firstName = currentUser?.displayName?.split(' ')[0] || t('pulse.you', 'Você');
   const greeting = `${getGreeting()}, ${firstName}.`;
 
   const availableContacts = INITIAL_CONTACTS.filter(c => (c.presence?.status || 'available') === 'available');
@@ -122,7 +122,7 @@ export const PulseView: React.FC<PulseViewProps> = ({ onNavigate, onOpenProfile 
                 size="md"
                 className="mb-2 group-hover:scale-105 transition-transform"
               />
-              <p className="text-xs font-semibold truncate w-full">{contact.displayName.split(' ')[0]}</p>
+              <p className="text-xs font-semibold truncate w-full">{contact.displayName?.split(' ')[0] || '...'}</p>
               <p className="text-[10px] text-emerald-500 font-medium truncate w-full mt-0.5">
                 {contact.presence?.customMessage || t('common.available', 'Disponível')}
               </p>

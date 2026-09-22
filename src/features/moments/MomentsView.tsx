@@ -373,7 +373,7 @@ export const MomentsView: React.FC = () => {
                 )}
               </div>
               <span className="text-[11px] font-medium text-neutral-700 dark:text-neutral-300 truncate max-w-[68px] text-center">
-                {moment.author.displayName.split(' ')[0]}
+                {moment.author.displayName?.split(' ')[0] || '...'}
               </span>
             </div>
           ))}

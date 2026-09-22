@@ -586,7 +586,7 @@ export const IndividualChatView: React.FC<IndividualChatViewProps> = ({
               <div className="flex items-center gap-1.5">
                 {isGroup ? (
                   <p className="text-[10px] text-neutral-500 dark:text-neutral-400 truncate">
-                    {activeConversation.participants.map(p => p.displayName.split(' ')[0]).join(', ')}, Você
+                    {activeConversation.participants.map(p => p.displayName?.split(' ')[0] || '...').join(', ')}, Você
                   </p>
                 ) : (
                   <>
