@@ -43,7 +43,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
   const [displayName, setDisplayName] = useState(currentUser?.displayName || '');
   const [bio, setBio] = useState(currentUser?.bio || '');
   const [avatarUrl, setAvatarUrl] = useState(currentUser?.avatarUrl || '');
-  const [customStatusInput, setCustomStatusInput] = useState(currentUser?.presence.customMessage || '');
+  const [customStatusInput, setCustomStatusInput] = useState(currentUser?.presence?.customMessage || '');
 
   if (!isOpen || !currentUser) return null;
 
