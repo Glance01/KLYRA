@@ -1,0 +1,112 @@
+{
+  "entities": {
+    "user": {
+      "title": "User",
+      "description": "User profile with E2EE identity keys and presence",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "username": { "type": "string" },
+        "displayName": { "type": "string" },
+        "bio": { "type": "string" },
+        "avatarUrl": { "type": "string" },
+        "publicKey": { "type": "string" },
+        "deviceId": { "type": "string" },
+        "passwordHash": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "username", "displayName"]
+    },
+    "conversation": {
+      "title": "Conversation",
+      "description": "Direct and group end-to-end encrypted chat channels",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "type": { "type": "string", "enum": ["direct", "group"] },
+        "avatarUrl": { "type": "string" },
+        "isPinned": { "type": "boolean" },
+        "isArchived": { "type": "boolean" },
+        "isMuted": { "type": "boolean" },
+        "isE2EE": { "type": "boolean" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "title", "type"]
+    },
+    "message": {
+      "title": "Message",
+      "description": "Chat messages with text, audio, images and video saved as secure link URLs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "conversationId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "senderAvatar": { "type": "string" },
+        "ciphertext": { "type": "string" },
+        "decryptedContent": { "type": "string" },
+        "type": { "type": "string", "enum": ["text", "image", "audio", "video", "file"] },
+        "mediaUrl": { "type": "string" },
+        "mediaDuration": { "type": "number" },
+        "status": { "type": "string", "enum": ["sending", "sent", "delivered", "read", "failed"] },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "conversationId", "senderId", "type"]
+    },
+    "moment": {
+      "title": "Moment",
+      "description": "Ephemeral stories and moments stored directly in Firestore with image URLs as links",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "author": { "type": "object" },
+        "type": { "type": "string", "enum": ["photo", "text", "audio"] },
+        "content": { "type": "string" },
+        "mediaUrl": { "type": "string" },
+        "locationName": { "type": "string" },
+        "accentColor": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "createdTimestamp": { "type": "number" },
+        "expiresInHours": { "type": "number" },
+        "expiresAtMs": { "type": "number" },
+        "viewsCount": { "type": "number" },
+        "likesCount": { "type": "number" },
+        "privacy": { "type": "string" }
+      },
+      "required": ["id", "author", "type", "content", "createdTimestamp"]
+    },
+    "note": {
+      "title": "Note",
+      "description": "User notes and links stored securely in Firestore without local storage",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "category": { "type": "string", "enum": ["all", "note", "link", "media"] },
+        "url": { "type": "string" },
+        "isPinned": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "content", "category"]
+    },
+    "username_record": {
+      "title": "Username Record",
+      "description": "Unique username registry index preventing account duplication",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "displayName": { "type": "string" },
+        "avatarUrl": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId", "username"]
+    }
+  },
+  "firestore": {
+    "defaultRules": "rules_version = '2'; service cloud.firestore { match /databases/{database}/documents { match /{document=**} { allow read, write: if false; } } }"
+  }
+}

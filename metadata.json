@@ -1,0 +1,6 @@
+{
+  "name": "SENDA",
+  "description": "Conecte-se. Converse. Siga em frente. Aplicativo de comunicação privada, moderna e sofisticada.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

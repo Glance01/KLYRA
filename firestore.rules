@@ -1,0 +1,107 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function for ID verification on single-document operations
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    // Default deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Connection Health Check
+    match /test/{testId} {
+      allow get, write: if isValidId(testId);
+      allow list: if true;
+    }
+
+    // User Presence & Realtime Status
+    match /presence/{userId} {
+      allow get, write: if isValidId(userId);
+      allow list: if true;
+    }
+
+    // Ephemeral Moments & Audio Stories
+    match /moments/{momentId} {
+      allow get, write: if isValidId(momentId);
+      allow list: if true;
+    }
+
+    // Secure Notes & Vault
+    match /notes/{noteId} {
+      allow get, write: if isValidId(noteId);
+      allow list: if true;
+    }
+
+    // Unique username lookup & reservation
+    match /usernames/{username} {
+      allow get, write: if isValidId(username);
+      allow list: if true;
+    }
+
+    // User Profile: Public for lookup, sync and recovery
+    match /users/{userId} {
+      allow get, write: if isValidId(userId);
+      allow list: if true;
+
+      // User's Conversations
+      match /conversations/{conversationId} {
+        allow get, write: if isValidId(userId) && isValidId(conversationId);
+        allow list: if isValidId(userId);
+
+        // Messages inside conversation
+        match /messages/{messageId} {
+          allow get, write: if isValidId(userId) && isValidId(conversationId) && isValidId(messageId);
+          allow list: if isValidId(userId) && isValidId(conversationId);
+        }
+      }
+
+      // User settings & personalizations
+      match /settings/{settingId} {
+        allow get, write: if isValidId(userId) && isValidId(settingId);
+        allow list: if isValidId(userId);
+      }
+
+      // User's private notes & saved links
+      match /notes/{noteId} {
+        allow get, write: if isValidId(userId) && isValidId(noteId);
+        allow list: if isValidId(userId);
+      }
+    }
+
+    // Global Conversations & Typing Indicators
+    match /conversations/{conversationId} {
+      allow get, write: if isValidId(conversationId);
+      allow list: if true;
+
+      match /typing/{userId} {
+        allow get, write: if isValidId(conversationId) && isValidId(userId);
+        allow list: if isValidId(conversationId);
+      }
+
+      match /messages/{messageId} {
+        allow get, write: if isValidId(conversationId) && isValidId(messageId);
+        allow list: if isValidId(conversationId);
+      }
+    }
+
+    // WebRTC Real-Time Signaling for Voice & Video Calls
+    match /calls/{callId} {
+      allow get, write: if isValidId(callId);
+      allow list: if true;
+
+      match /callerCandidates/{candidateId} {
+        allow get, write: if isValidId(callId) && isValidId(candidateId);
+        allow list: if isValidId(callId);
+      }
+
+      match /receiverCandidates/{candidateId} {
+        allow get, write: if isValidId(callId) && isValidId(candidateId);
+        allow list: if isValidId(callId);
+      }
+    }
+  }
+}
+
